@@ -76,8 +76,7 @@ CREATE TABLE Events (
 
 -- 9. Tạo bảng EndangeredSpecies
 CREATE TABLE EndangeredSpecies (
-    SpeciesID VARCHAR(20) PRIMARY KEY,
-    AnimalID VARCHAR(20),
+    AnimalID VARCHAR(20) PRIMARY KEY,
     Threats VARCHAR(255),
     ProtectionMeasures VARCHAR(255)
 );
