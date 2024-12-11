@@ -81,13 +81,3 @@ CREATE TABLE EndangeredSpecies (
     Threats VARCHAR(255),
     ProtectionMeasures VARCHAR(255)
 );
-
--- 10. Tạo bảng Weather
-CREATE TABLE Weather (
-    WeatherID VARCHAR(20) PRIMARY KEY,
-    ZoneID VARCHAR(20),
-    Date DATE,
-    Temperature DECIMAL(5,2),
-    Rainfall DECIMAL(5,2),
-    Description VARCHAR(255)
-);
