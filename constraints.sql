@@ -37,4 +37,8 @@ ADD CONSTRAINT fk_events
 FOREIGN KEY (ZoneID)
 REFERENCES ParkZones(ZoneID);
 
-
+-- FK EndageredSpecies
+ALTER TABLE EndangeredSpecies
+ADD CONSTRAINT fk_EndangeredSpecies
+FOREIGN KEY (AnimalID)
+REFERENCES Animals(AnimalID);
