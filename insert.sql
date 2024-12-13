@@ -1,4 +1,5 @@
 USE vuonquocgia;
+
 -- Chèn dữ liệu vào bảng Habitats
 INSERT INTO Habitats (HabitatID, HabitatType, Description) VALUES
 ('H001', 'Forest', 'Dense forest with diverse flora and fauna'),
@@ -161,9 +162,9 @@ INSERT INTO AnimalLocations (AnimalLocationID, AnimalID, ZoneID, DateObserved) V
 INSERT INTO Staff (StaffID, FullName, Role, ContactInfo, ZoneID) VALUES
 ('S001', 'John Doe', 'Researcher', 'john.doe1234X@vuonqg.com', NULL),
 ('S002', 'Jane Smith', 'Veterinarian', 'jane.smith5678Y@vuonqg.com', NULL),
-('S003', 'Alice Brown', 'Park Ranger', 'alice.brown9101Z@vuonqg.com', 'Z003'),
+('S003', 'Alice Brown', 'Park Ranger', 'alice.brown9101Z@vuonqg.com', 'Z001'),
 ('S004', 'Jane Smith', 'Veterinarian', 'jane.smith1123P@vuonqg.com', NULL),
-('S005', 'Charlie White', 'Park Ranger', 'charlie.white4156Q@vuonqg.com', NULL),
+('S005', 'Charlie White', 'Park Ranger', 'charlie.white4156Q@vuonqg.com', 'Z002'),
 ('S006', 'Ethan Black', 'Veterinarian', 'ethan.black7890R@vuonqg.com', NULL),
 ('S007', 'Fiona Gray', 'Park Ranger', 'fiona.gray2345S@vuonqg.com', 'Z006'),
 ('S008', 'George Blue', 'Veterinarian', 'george.blue6789T@vuonqg.com', NULL),
@@ -184,7 +185,7 @@ INSERT INTO Staff (StaffID, FullName, Role, ContactInfo, ZoneID) VALUES
 ('S023', 'Eva Brown', 'Veterinarian', 'eva.brown1234X@vuonqg.com', NULL),
 ('S024', 'Frank Blue', 'Cleaning Staff', 'frank.blue5678Y@vuonqg.com', NULL),
 ('S025', 'Grace Yellow', 'Event Coordinator', 'grace.yellow9101Z@vuonqg.com', NULL),
-('S026', 'Harry Red', 'Tour Guide', 'harry.red2345P@vuonqg.com', NULL),
+('S026', 'Harry Red', 'Park Ranger', 'harry.red2345P@vuonqg.com', 'Z003'),
 ('S027', 'Ivy Orange', 'Receptionist', 'ivy.orange6789Q@vuonqg.com', NULL),
 ('S028', 'Jack Pink', 'Tour Guide', 'jack.pink1234R@vuonqg.com', NULL),
 ('S029', 'Kathy Violet', 'Resource Manager', 'kathy.violet5678S@vuonqg.com',NULL),
