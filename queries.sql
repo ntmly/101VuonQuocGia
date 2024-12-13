@@ -24,8 +24,8 @@ JOIN animallocations al ON a.AnimalID = al.AnimalID
 JOIN parkzones pz ON al.ZoneID = pz.ZoneID
 JOIN tourists t ON pz.ZoneID = t.ZoneID
 WHERE a.AnimalID in (SELECT a.AnimalID
-					FROM animals a
-					JOIN endangeredspecies es ON a.AnimalID = es.AnimalID);
+		     FROM animals a
+		     JOIN endangeredspecies es ON a.AnimalID = es.AnimalID);
 					
 -- 4. Số lượng động vật nguy cấp của từng môi trường sống
 SELECT h.HabitatID, h.HabitatType, COUNT(a.AnimalID) as EndangeredSpeciesCount
