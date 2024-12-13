@@ -1,6 +1,6 @@
 USE vuonquocgia;
 
--- TRUY VẤN SỬ DỤNG INNER JOIN
+-- a. TRUY VẤN SỬ DỤNG INNER JOIN
 -- 1. Nhân viên nghiên cứu các động vật nguy cấp
 SELECT DISTINCT s.StaffID, s.FullName, a.AnimalID, a.CommonName, es.Threats FROM staff s
 JOIN research r on s.StaffID = r.StaffID
@@ -67,7 +67,73 @@ JOIN animals a ON al.AnimalID = a.AnimalID
 GROUP BY e.EventName, pz.ZoneName
 ORDER BY AnimalCount DESC;
 
--- TRUY VẤN SỬ DỤNG SUBQUERY TRONG FROM
+-- c. TRUY VẤN SỬ DỤNG SUBQUERY TRONG WHERE
+-- 1. Liệt kê các khu vực có ít nhất một động vật không thuộc nhóm nguy cấp
+SELECT ZoneID, ZoneName
+FROM ParkZones
+WHERE ZoneID IN (
+    SELECT ZoneID
+    FROM AnimalLocations
+    WHERE AnimalID NOT IN (
+        SELECT AnimalID
+        FROM EndangeredSpecies
+    )
+);
+
+-- 2. Liệt kê các động vật có ít nhất một nghiên cứu, nhưng không được quan sát bởi khách tham quan
+SELECT AnimalID, CommonName
+FROM Animals
+WHERE AnimalID IN (
+    SELECT AnimalID
+    FROM Research
+)
+AND AnimalID NOT IN (
+    SELECT AnimalID
+    FROM AnimalLocations
+    WHERE ZoneID IN (
+        SELECT ZoneID
+        FROM Tourists
+    )
+);
+
+-- 3. Liệt kê những nhân viên phụ trách khu vực có sự kiện trong tháng 01
+SELECT s.StaffID, s.FullName, s.ZoneID, e.Date
+FROM Staff s
+JOIN Events e ON s.ZoneID = e.ZoneID
+WHERE e.ZoneID IN (
+    SELECT e.ZoneID
+    FROM Events e
+    WHERE MONTH(e.Date) = 01
+)
+AND MONTH(e.Date) = 01;
+
+-- 4. Liệt kê các khu vực có ít nhất một động vật xuất hiện trong nghiên cứu có kết thúc sau năm 2027
+SELECT ZoneID, ZoneName
+FROM ParkZones
+WHERE ZoneID IN (
+    SELECT ZoneID
+    FROM AnimalLocations
+    WHERE AnimalID IN (
+        SELECT AnimalID
+        FROM Research
+        WHERE EndDate > '2027-01-01'
+    )
+);
+
+-- 5. Số lượng sự kiện có động vật Panthera
+SELECT COUNT(EventID) AS EventCount
+FROM Events
+WHERE ZoneID IN (
+    SELECT ZoneID
+    FROM AnimalLocations
+    WHERE AnimalID IN (
+        SELECT AnimalID
+        FROM Animals
+        WHERE ScientificName LIKE 'Panthera%'
+    )
+);
+
+-- d. TRUY VẤN SỬ DỤNG SUBQUERY TRONG FROM
 -- 1. Liệt kê các khu vực và số lượng lần quan sát được các động vật ở mỗi khu vực
 SELECT pz.ZoneName, animal_data.AnimalCount
 FROM (SELECT al.ZoneID, COUNT(DISTINCT al.AnimalID) AS AnimalCount
