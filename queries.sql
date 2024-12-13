@@ -68,7 +68,6 @@ GROUP BY e.EventName, pz.ZoneName
 ORDER BY AnimalCount DESC;
 
 -- TRUY VẤN SỬ DỤNG SUBQUERY TRONG FROM
-
 -- 1. Liệt kê các khu vực và số lượng lần quan sát được các động vật ở mỗi khu vực
 SELECT pz.ZoneName, animal_data.AnimalCount
 FROM (SELECT al.ZoneID, COUNT(DISTINCT al.AnimalID) AS AnimalCount
