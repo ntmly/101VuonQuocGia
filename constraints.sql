@@ -37,7 +37,7 @@ ADD CONSTRAINT fk_events
 FOREIGN KEY (ZoneID)
 REFERENCES ParkZones(ZoneID);
 
--- FK EndageredSpecies
+-- FK EndangeredSpecies
 ALTER TABLE EndangeredSpecies
 ADD CONSTRAINT fk_EndangeredSpecies
 FOREIGN KEY (AnimalID)
@@ -46,3 +46,13 @@ REFERENCES Animals(AnimalID);
 -- Ràng buộc UNIQUE tránh phản hồi trùng lặp cùng ngày
 ALTER TABLE Tourists
 ADD CONSTRAINT unique_tourist_feedback UNIQUE (VisitDate, Feedback);
+
+-- Ràng buộc Population trong bảng Animals phải là số không âm
+ALTER TABLE Animals
+ADD CONSTRAINT chk_population CHECK (Population >= 0);
+
+-- Ràng buộc NOT NULL đảm bảo các cột quan trọng không được NULL trong bảng Animals
+ALTER TABLE Animals
+MODIFY CommonName VARCHAR(100) NOT NULL,
+MODIFY ScientificName VARCHAR(100) NOT NULL,
+MODIFY Population INT NOT NULL;

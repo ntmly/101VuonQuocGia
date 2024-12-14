@@ -1,3 +1,5 @@
+use vuonquocgia;
+
 -- 1. Ngăn chặn xóa khu vực (Park Zone) nếu có động vật hoặc nhân viên liên quan
 DELIMITER $$
 CREATE TRIGGER trg_PreventDeleteZone
