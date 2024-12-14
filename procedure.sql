@@ -15,7 +15,7 @@ END //
 DELIMITER ;
 
 CALL GetAnimalsByHabitat('H001');
-CALL GetAnimalsByHabitat('H005');
+CALL GetAnimalsByHabitat('H099');
 
 -- 2. Lấy thông tin nhân viên phụ trách các khu vực
 DELIMITER //
