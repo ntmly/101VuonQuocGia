@@ -29,7 +29,6 @@ Hệ thống quản lý dữ liệu về:
 - 👷 **Nhân viên**
 - 🧳 **Du khách**  
 - 🎯 **Sự kiện bảo tồn**
-- ☁️ **Thời tiết**
 - **Một số dữ liệu khác nữa**
 
 Hệ thống hỗ trợ công tác bảo tồn và quản lý, đồng thời cung cấp thông tin chi tiết cho các nhà nghiên cứu và khách du lịch.  
