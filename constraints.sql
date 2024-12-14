@@ -42,3 +42,7 @@ ALTER TABLE EndangeredSpecies
 ADD CONSTRAINT fk_EndangeredSpecies
 FOREIGN KEY (AnimalID)
 REFERENCES Animals(AnimalID);
+
+-- Ràng buộc UNIQUE tránh phản hồi trùng lặp cùng ngày
+ALTER TABLE Tourists
+ADD CONSTRAINT unique_tourist_feedback UNIQUE (VisitDate, Feedback);

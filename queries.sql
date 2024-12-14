@@ -67,6 +67,76 @@ JOIN animals a ON al.AnimalID = a.AnimalID
 GROUP BY e.EventName, pz.ZoneName
 ORDER BY AnimalCount DESC;
 
+-- b. TRUY VẤN SỬ DỤNG OUTER JOIN
+-- 1. Thông tin sự kiện, khu vực tổ chức và nhân viên làm việc tại khu vực đó
+SELECT 
+    Events.EventID, 
+    Events.EventName, 
+    ParkZones.ZoneName, 
+    Staff.FullName AS StaffName
+FROM 
+    Events
+LEFT OUTER JOIN ParkZones ON Events.ZoneID = ParkZones.ZoneID
+LEFT OUTER JOIN Staff ON ParkZones.ZoneID = Staff.ZoneID;
+
+-- 2. Danh sách nghiên cứu, loài động vật và các biện pháp bảo vệ nếu thuộc danh sách nguy cấp
+SELECT 
+    Research.ResearchID, 
+    Research.Title AS ResearchTitle, 
+    Animals.CommonName AS AnimalName, 
+    EndangeredSpecies.ProtectionMeasures
+FROM 
+    Research
+LEFT OUTER JOIN Animals ON Research.AnimalID = Animals.AnimalID
+LEFT OUTER JOIN EndangeredSpecies ON Animals.AnimalID = EndangeredSpecies.AnimalID;
+
+-- 3. Danh sách nhân viên không tham gia nghiên cứu nào
+SELECT 
+    Staff.StaffID AS StaffID,
+    Staff.FullName AS StaffName,
+    Staff.Role AS Role,
+    Staff.ContactInfo AS ContactInfo,
+    Staff.ZoneID AS ZoneID
+FROM 
+    Staff
+LEFT OUTER JOIN Research 
+    ON Staff.StaffID = Research.StaffID
+WHERE 
+    Research.StaffID IS NULL;
+
+-- 4. Lượng khách và sự kiện của mỗi tháng trong từng năm
+SELECT 
+    COALESCE(EXTRACT(YEAR FROM Tourists.VisitDate), EXTRACT(YEAR FROM Events.Date)) AS Year,
+    COALESCE(EXTRACT(MONTH FROM Tourists.VisitDate), EXTRACT(MONTH FROM Events.Date)) AS Month,
+    COUNT(DISTINCT Tourists.TouristID) AS TouristCount,
+    COUNT(DISTINCT Events.EventID) AS EventCount
+FROM 
+    Tourists
+LEFT OUTER JOIN Events 
+ON EXTRACT(YEAR FROM Tourists.VisitDate) = EXTRACT(YEAR FROM Events.Date)
+   AND EXTRACT(MONTH FROM Tourists.VisitDate) = EXTRACT(MONTH FROM Events.Date)
+GROUP BY 
+    COALESCE(EXTRACT(YEAR FROM Tourists.VisitDate), EXTRACT(YEAR FROM Events.Date)),
+    COALESCE(EXTRACT(MONTH FROM Tourists.VisitDate), EXTRACT(MONTH FROM Events.Date))
+ORDER BY 
+    Year, Month;
+    
+-- 5. Danh sách 10 nghiên cứu có số ngày hoàn thành ngắn nhất, cùng với tên nhân viên thực hiện, động vật nghiên cứu
+SELECT 
+    Research.ResearchID AS ResearchID,
+    Research.Title AS ResearchTitle,
+    DATEDIFF(Research.EndDate, Research.StartDate) AS DaysToComplete,
+    Staff.FullName AS StaffName,
+    Animals.CommonName AS AnimalName
+FROM 
+    Research
+LEFT OUTER JOIN Staff 
+    ON Research.StaffID = Staff.StaffID
+LEFT OUTER JOIN Animals 
+    ON Research.AnimalID = Animals.AnimalID
+ORDER BY DaysToComplete
+LIMIT 10;
+
 -- c. TRUY VẤN SỬ DỤNG SUBQUERY TRONG WHERE
 -- 1. Liệt kê các khu vực có ít nhất một động vật không thuộc nhóm nguy cấp
 SELECT ZoneID, ZoneName
@@ -177,3 +247,45 @@ FROM (SELECT pz.ZoneName, a.CommonName
      JOIN AnimalLocations al ON pz.ZoneID = al.ZoneID
      JOIN Animals a ON al.AnimalID = a.AnimalID) AS animal_data
 GROUP BY animal_data.ZoneName;
+
+-- e. TRUY VẤN SỬ DỤNG GROUP BY VÀ HÀM TỔNG HỢP
+-- 1. Liệt kê số lượng động vật có nguy cơ tuyệt chủng theo từng họ (Family)
+SELECT a.Family, COUNT(*) AS EndangeredSpeciesCount
+FROM Animals a
+JOIN EndangeredSpecies es ON a.AnimalID = es.AnimalID
+GROUP BY a.Family;
+
+-- 2. Số lượng nhân viên theo vai trò
+SELECT 
+    s.Role,
+    COUNT(s.StaffID) AS TotalStaff
+FROM Staff s
+GROUP BY s.Role
+ORDER BY TotalStaff DESC;
+
+-- 3. Số lượng nghiên cứu của nhân viên theo từng năm
+SELECT 
+    r.StaffID,
+    s.FullName AS StaffFullName,
+    YEAR(r.StartDate) AS StartYear,
+    COUNT(r.ResearchID) AS TotalResearches
+FROM Research r
+JOIN Staff s ON r.StaffID = s.StaffID
+GROUP BY r.StaffID, s.FullName, YEAR(r.StartDate)
+ORDER BY StartYear;
+
+-- 4. Tính số lượng động vật tối thiểu và tối đa theo loài
+SELECT 
+    a.Species,
+    MIN(a.Population) AS MinPopulation,
+    MAX(a.Population) AS MaxPopulation
+FROM Animals a
+GROUP BY a.Species
+ORDER BY Species;
+
+-- 5. Số lượng động vật có trong từng khu vực theo tình trạng bảo tồn
+SELECT al.ZoneID, a.ConservationStatus, COUNT(*) AS TotalAnimals
+FROM AnimalLocations al
+JOIN Animals a ON al.AnimalID = a.AnimalID
+GROUP BY al.ZoneID, a.ConservationStatus
+ORDER BY ZoneID;
