@@ -1,6 +1,43 @@
 USE vuonquocgia;
 
--- 1. Liệt kê các khu vực có nhiều sự kiện nhất và số lượng động vật xuất hiện
+-- 1. Lấy thông tin động vật theo môi trường sống
+DELIMITER //
+CREATE PROCEDURE GetAnimalsByHabitat(IN HabitatID VARCHAR(50))
+BEGIN
+    SELECT 
+        a.AnimalID, 
+        a.CommonName, 
+        h.HabitatType,
+        al.ZoneID,
+        pz.ZoneName
+    FROM Animals a
+    JOIN AnimalLocations al ON a.AnimalID = al.AnimalID
+    JOIN ParkZones pz ON al.ZoneID = pz.ZoneID
+    JOIN Habitats h ON a.HabitatID = h.HabitatID  
+    WHERE h.HabitatID = HabitatID  
+    ORDER BY a.CommonName; 
+END //
+DELIMITER ;
+
+CALL GetAnimalsByHabitat('H001');
+CALL GetAnimalsByHabitat('H005');
+
+-- 2. Lấy thông tin nhân viên phụ trách các khu vực
+DELIMITER //
+CREATE PROCEDURE GetStaffByZone(IN StaffID VARCHAR(50))
+BEGIN
+    SELECT s.StaffID, s.FullName, pz.ZoneName
+    FROM Staff s
+    JOIN ParkZones pz ON s.ZoneID = pz.ZoneID
+    WHERE s.StaffID = StaffID  
+    ORDER BY pz.ZoneName; 
+END //
+DELIMITER ;
+
+CALL GetStaffByZone('S001');
+CALL GetStaffByZone('S009');
+
+-- 3. Liệt kê các khu vực có nhiều sự kiện nhất và số lượng động vật xuất hiện
 DELIMITER //
 CREATE PROCEDURE GetTopEventZones()
 BEGIN
@@ -17,7 +54,7 @@ DELIMITER ;
 
 CALL GetTopEventZones();
 
--- 2. Liệt kê danh sách nhân viên quản lý khu vực có động vật nguy cấp
+-- 4. Liệt kê danh sách nhân viên quản lý khu vực có động vật nguy cấp
 DELIMITER //
 CREATE PROCEDURE GetStaffManagingEndangeredZones()
 BEGIN
@@ -34,7 +71,7 @@ DELIMITER ;
 
 CALL GetStaffManagingEndangeredZones();
 
--- 3. Liệt kê các sự kiện có động vật nguy cấp tham gia
+-- 5. Liệt kê các sự kiện có động vật nguy cấp tham gia
 DELIMITER //
 CREATE PROCEDURE GetEventsWithEndangeredAnimals()
 BEGIN
@@ -51,3 +88,5 @@ END //
 DELIMITER ;
 
 CALL GetEventsWithEndangeredAnimals();
+
+
