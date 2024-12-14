@@ -4,12 +4,7 @@ USE vuonquocgia;
 DELIMITER //
 CREATE PROCEDURE GetAnimalsByHabitat(IN HabitatID VARCHAR(50))
 BEGIN
-    SELECT 
-        a.AnimalID, 
-        a.CommonName, 
-        h.HabitatType,
-        al.ZoneID,
-        pz.ZoneName
+    SELECT a.AnimalID, a.CommonName, h.HabitatType, al.ZoneID, pz.ZoneName
     FROM Animals a
     JOIN AnimalLocations al ON a.AnimalID = al.AnimalID
     JOIN ParkZones pz ON al.ZoneID = pz.ZoneID
